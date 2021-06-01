@@ -40,7 +40,9 @@ int main() {
 			string = "";
 			do {
 				cin >> symbol;
-				if (symbol != ' ' && symbol != '=')
+				if (symbol == ',') {
+					string += '.';
+				} else if (symbol != ' ' && symbol != '=')
 					string += symbol;
 			} while (symbol != '=');
 			postfix = toPostfix(string);
@@ -56,15 +58,40 @@ int main() {
 		} /* Second task */
 		else if (task == 2) {
 			cout << "Enter your number (ex. AF.32 (16)): " << endl;
-			cin >> string;
+			bool correct;
 			do {
-				cin >> substr;
-				if (substr.find_first_of('(') >= 0)
-					substr.erase(substr.find_first_of('('), 1);
-				if (substr.find_first_of(')') >= 0)
-					substr.erase(substr.find_first_of(')'), 1);
-			} while ((int)atof(substr.c_str()) < 2 && (int)atof(substr.c_str()) > 36);
-			basis = (int)atof(substr.c_str());
+				correct = true;
+				cin >> string;
+				int value;
+				do {
+					cin >> substr;
+					int bracket = substr.find_first_of('(');
+					if (bracket >= 0)
+						substr.erase(bracket, 1);
+					bracket = substr.find_first_of(')');
+					if (bracket >= 0)
+						substr.erase(bracket, 1);
+					value = (int)atof(substr.c_str());
+				} while (value < 2 && value > 36);
+				basis = value;
+				for (int i = 0; i < string.length(); ++i) {
+					char symbol = string.at(i);
+					if (symbol >= '0' && symbol <= '9') {
+						symbol -= 48;
+					} else if (symbol >= 'A' && symbol <= 'Z') {
+						symbol -= 55;
+					} else if (symbol >= 'a' && symbol <= 'z') {
+						string.at(i) = symbol - 32;
+						symbol -= 87;
+					} else if (symbol == ',') {
+						string.at(i) = '.';
+					}
+					if (symbol >= value && symbol != '.' && symbol != ',') {
+						correct = false;
+					}
+				}
+				if (!correct) cout << "Incorrect basis or number!" << endl;
+			} while (!correct);
 			cout << "Convert to (basis): " << endl;
 			do {
 				cin >> toBasis;
