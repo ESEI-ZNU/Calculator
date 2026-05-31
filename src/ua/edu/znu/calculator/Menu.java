@@ -1,4 +1,4 @@
-package ESEI_ZNU_Calculator;
+package ua.edu.znu.calculator;
 
 /**
  * відображення головного меню програми та вибір режиму роботи.
