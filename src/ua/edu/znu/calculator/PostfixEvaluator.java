@@ -5,7 +5,7 @@ import java.util.Stack;
 /**
  * Обчислення результату за постфіксним записом
  * @author Novak
- * @version 1.0
+ * @version 1.1
  */
 public class PostfixEvaluator {
     public static double evaluate(String postfix) {
@@ -18,7 +18,7 @@ public class PostfixEvaluator {
             if (x.isEmpty()) {
                 continue;
             }
-            if (x.equals("+") || x.equals("-") || x.equals("*") || x.equals("/") || x.equals("^")) {
+            if (x.equals("+") || x.equals("-") || x.equals("*") || x.equals("/") || x.equals("%") || x.equals("^")) {
                 double b = stek.pop(); // зі стеку друге число
                 double a = stek.pop(); // зі стеку перше число
                 // Рахуємо результат залежно від знака і відразу кладемо його назад у стек
@@ -26,6 +26,7 @@ public class PostfixEvaluator {
                 else if (x.equals("-")) stek.push(a - b);
                 else if (x.equals("*")) stek.push(a * b);
                 else if (x.equals("/")) stek.push(a / b);
+                else if (x.equals("%")) stek.push(a % b);
                 else if (x.equals("^")) stek.push(Math.pow(a, b));
             }
             else {

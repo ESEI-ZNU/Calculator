@@ -5,7 +5,7 @@ import java.util.Stack;
 /**
  * Виконує аналіз введеного рядка та перетворення інфіксного виразу в постфіксну нотацію
  * @author Novak
- * @version 1.0
+ * @version 1.1
  */
 public class ExpressionParser {
 
@@ -23,9 +23,15 @@ public class ExpressionParser {
                 continue;
             }
             // на початку числа якщо символ є цифрою або крапкою
-            if (Character.isDigit(symvol) || symvol == '.') {
-                while (i < vhidnyjRjadok.length() && (Character.isDigit(vhidnyjRjadok.charAt(i)) || vhidnyjRjadok.charAt(i) == '.')) {
-                    rezultat.append(vhidnyjRjadok.charAt(i));
+            if (Character.isDigit(symvol) || symvol == '.' || symvol == ',') {
+                while (i < vhidnyjRjadok.length() && (Character.isDigit(vhidnyjRjadok.charAt(i)) || vhidnyjRjadok.charAt(i) == '.' || vhidnyjRjadok.charAt(i) == ',')) {
+                    char potochnyjSymvol = vhidnyjRjadok.charAt(i);
+                    // ВИПРАВЛЕНО: якщо зустріли кому, міняємо її на крапку для коректного обчислення
+                    if (potochnyjSymvol == ',') {
+                        rezultat.append('.');
+                    } else {
+                        rezultat.append(potochnyjSymvol);
+                    }
                     i++;
                 }
                 rezultat.append(" ");
@@ -72,7 +78,7 @@ public class ExpressionParser {
         if (operator == '^') {
             return 4;
         }
-        if (operator == '*' || operator == '/') {
+        if (operator == '*' || operator == '/' || operator == '%') {
             return 3;
         }
         if (operator == '+' || operator == '-') {
@@ -81,6 +87,6 @@ public class ExpressionParser {
         return -1;
     }
     private static boolean isOperator(char symvol) {
-        return symvol == '+' || symvol == '-' || symvol == '*' || symvol == '/' || symvol == '^';
+        return symvol == '+' || symvol == '-' || symvol == '*' || symvol == '/' || symvol == '^' || symvol == '%';
     }
 }
